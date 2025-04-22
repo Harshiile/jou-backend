@@ -1,0 +1,33 @@
+{
+  "name": "justoneupload",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "build":"tsc -b",
+    "build-dev":"tsc --watch",
+    "dev":"node dist/index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Harshiile/jou-backend.git"
+  },
+  "author": "Harshiile",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Harshiile/jou-backend/issues"
+  },
+  "homepage": "https://github.com/Harshiile/jou-backend#readme",
+  "description": "",
+  "dependencies": {
+    "dotenv": "^16.5.0",
+    "express": "^5.1.0",
+    "jest": "^29.7.0",
+    "supertest": "^7.1.0"
+  },
+  "devDependencies": {
+    "@types/express": "^5.0.1",
+    "@types/node": "^22.14.1",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.8.3"
+  }
+}
