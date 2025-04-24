@@ -14,16 +14,22 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.loginUser = void 0;
 const APIError_1 = __importDefault(require("../../lib/Error/APIError"));
+const db_1 = require("../../db");
+const schema_1 = require("../../db/schema");
+const drizzle_orm_1 = require("drizzle-orm");
+const ServerError_1 = require("../../lib/func/ServerError");
+const jwt_1 = require("../../lib/jwt");
 const data = { email: "the", password: "Mcintyre@04" };
 const loginUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     if (req.body) {
         const { email, password } = req.body;
-        // data - fetch from DB
-        if (data) {
-            if (password == data.password) {
+        const data = yield db_1.db.select().from(schema_1.User).where((0, drizzle_orm_1.eq)(schema_1.User.email, email)).catch(() => (0, ServerError_1.ServerError)());
+        if (data.length > 0) {
+            if (password == data[0].password) {
                 // save accessToken
                 res
                     .status(200)
+                    .setHeader("authorization", `Bearer ${(0, jwt_1.JwtGenerate)({ email })}`)
                     .json({
                     message: "User Logged In"
                 });
@@ -35,6 +41,6 @@ const loginUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
             throw new APIError_1.default(404, "User not Found");
     }
     else
-        throw new APIError_1.default(500, "Server Error");
+        (0, ServerError_1.ServerError)();
 });
 exports.loginUser = loginUser;

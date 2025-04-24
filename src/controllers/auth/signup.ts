@@ -3,16 +3,16 @@ import APIError from '../../lib/Error/APIError'
 import { db } from '../../db'
 import { User } from '../../db/schema'
 import { eq } from 'drizzle-orm'
+import { ServerError } from '../../lib/func/ServerError'
+import { JwtGenerate } from '../../lib/jwt'
 
-const ServerError = () => { throw new APIError(500, "Internal Server Error") }
+
 export const signUser = async (req: Request<{}, {}, User>, res: Response<APIResponse>) => {
     if (req.body) {
         const { email, password, role, name } = req.body
 
         // data - fetch from DB
         const data = await db.select().from(User).where(eq(User.email, email)).catch(() => ServerError())
-        console.table(data)
-
         if (!(data.length > 0)) {
             // save accessToken 
             await db.insert(User).values({
@@ -20,7 +20,7 @@ export const signUser = async (req: Request<{}, {}, User>, res: Response<APIResp
                 role,
                 email,
                 password,
-                refreshToken: 'xx-xxx-xxxx-xxxx'
+                refreshToken: `Bearer ${JwtGenerate({ email })}`
             }).catch(() => ServerError())
             res
                 .status(200)
@@ -30,5 +30,5 @@ export const signUser = async (req: Request<{}, {}, User>, res: Response<APIResp
         }
         else throw new APIError(409, "User Already Exist")
     }
-    else throw new APIError(500, "Server Error")
+    else ServerError()
 }

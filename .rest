@@ -1,9 +1,9 @@
 ###
-POST http://localhost:3000/api/signup
+POST http://localhost:3000/api/login
 Content-Type: application/json
 
 {
-    "email":"thcxscdsdeh",
+    "email":"thcxsceh",
     "password":"Mcifsdntyre@04",
     "role":1,
     "name":"Hearshil"
@@ -17,3 +17,9 @@ Content-Type: application/json
 {
     "email":"carterinesess@gmail.com"
 }
+
+
+
+###
+POST http://localhost:3000/api/just
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InRoY3hzY2VoIiwiaWF0IjoxNzQ1NTA2NTAxfQ.1KcbZueCni9ZWBMEYY8uo_Q7U8n9Sm5cifP4Yq4gMlM
