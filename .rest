@@ -3,6 +3,17 @@ POST http://localhost:3000/api/signup
 Content-Type: application/json
 
 {
-    "email":"thcxsceh",
-    "password":"Mcifsdntyre@04"
+    "email":"thcxscdsdeh",
+    "password":"Mcifsdntyre@04",
+    "role":1,
+    "name":"Hearshil"
+}
+
+
+###
+POST http://localhost:3000/api/mail/send
+Content-Type: application/json
+
+{
+    "email":"carterinesess@gmail.com"
 }

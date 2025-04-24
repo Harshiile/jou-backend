@@ -13,14 +13,26 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.signUser = void 0;
-const APIError_1 = __importDefault(require("../../types/APIError"));
-const data = undefined;
+const APIError_1 = __importDefault(require("../../lib/Error/APIError"));
+const db_1 = require("../../db");
+const schema_1 = require("../../db/schema");
+const drizzle_orm_1 = require("drizzle-orm");
+const ServerError = () => { throw new APIError_1.default(500, "Internal Server Error"); };
 const signUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     if (req.body) {
-        const { email, password } = req.body;
+        const { email, password, role, name } = req.body;
         // data - fetch from DB
-        if (!data) {
-            // save accessToken
+        const data = yield db_1.db.select().from(schema_1.User).where((0, drizzle_orm_1.eq)(schema_1.User.email, email)).catch(() => ServerError());
+        console.table(data);
+        if (!(data.length > 0)) {
+            // save accessToken 
+            yield db_1.db.insert(schema_1.User).values({
+                name,
+                role,
+                email,
+                password,
+                refreshToken: 'xx-xxx-xxxx-xxxx'
+            }).catch(() => ServerError());
             res
                 .status(200)
                 .json({

@@ -13,7 +13,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.loginUser = void 0;
-const APIError_1 = __importDefault(require("../../types/APIError"));
+const APIError_1 = __importDefault(require("../../lib/Error/APIError"));
 const data = { email: "the", password: "Mcintyre@04" };
 const loginUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     if (req.body) {
