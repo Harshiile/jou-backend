@@ -1,5 +1,5 @@
 {
-  "id": "3a21e197-0292-45f8-8442-1c619e041f5c",
+  "id": "a8ebbccc-e6a8-482a-a2b3-2aee8a512e57",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
@@ -77,6 +77,12 @@
           "primaryKey": false,
           "notNull": false
         },
+        "status": {
+          "name": "status",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
         "editor": {
           "name": "editor",
           "type": "uuid",
@@ -142,6 +148,12 @@
           "primaryKey": false,
           "notNull": false
         },
+        "userHandle": {
+          "name": "userHandle",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": false
+        },
         "avatar": {
           "name": "avatar",
           "type": "varchar",
@@ -156,6 +168,12 @@
         },
         "owner": {
           "name": "owner",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "editor": {
+          "name": "editor",
           "type": "uuid",
           "primaryKey": false,
           "notNull": false
@@ -175,6 +193,19 @@
           "tableTo": "user",
           "columnsFrom": [
             "owner"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        },
+        "workspace_editor_user_id_fk": {
+          "name": "workspace_editor_user_id_fk",
+          "tableFrom": "workspace",
+          "tableTo": "user",
+          "columnsFrom": [
+            "editor"
           ],
           "columnsTo": [
             "id"

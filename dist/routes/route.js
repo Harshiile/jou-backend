@@ -1,13 +1,22 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = require("express");
-const login_1 = require("../controllers/auth/login");
-const signup_1 = require("../controllers/auth/signup");
-const sendmail_1 = require("../controllers/mail/sendmail");
-const just_1 = require("../controllers/func/just");
+const auth_1 = require("../controllers/auth");
+const mail_1 = require("../controllers/mail");
+const oauth_1 = require("../controllers/oauth");
+const authorize_1 = require("../middleware/authorize");
 const router = (0, express_1.Router)();
-router.post('/login', login_1.loginUser);
-router.post('/signup', signup_1.signUser);
-router.post('/mail/send', sendmail_1.SendMail);
-router.post('/just', just_1.Just);
+const tmp = () => { };
+// User-Auth
+router.post('/login', auth_1.loginUser);
+router.post('/signup', auth_1.signUser);
+// Mail-Service
+router.post('/mail/send', authorize_1.authorize, mail_1.SendMail);
+// Youtube-Service
+router.get('/youtube/get/oauth-url', oauth_1.youtubeConnecterURL); // get/oauth/youtube/url
+router.get('/youtube/get/channel-info', oauth_1.youtubeChannelInfo); // get/youtube/info
+router.get('/youtube/upload/video', tmp);
+// Drive-Service
+router.get('/drive/upload', tmp);
+router.get('/drive/retrieve', tmp);
 exports.default = router;

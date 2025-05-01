@@ -1,7 +1,5 @@
-import { eq } from "drizzle-orm"
-import { db } from "../../db"
-import { User } from "../../db/schema"
+import { JwtGenerate } from "../../lib/jwt"
 
-export const RenewToken = async () => {
-    // db.select().from(User).where(eq(User.))
+export const RenewToken = (refreshToken: string) => {
+    return `Bearer ${JwtGenerate({ refreshToken })}`
 }

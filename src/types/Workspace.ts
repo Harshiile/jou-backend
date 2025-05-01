@@ -1,4 +1,4 @@
-interface Workspace {
+export interface Workspace {
     name: string,
     avatar: string,
     email: string,

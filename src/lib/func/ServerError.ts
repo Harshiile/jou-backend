@@ -1,3 +1,7 @@
-import APIError from "../Error/APIError"
-
-export const ServerError = () => { throw new APIError(500, "Internal Server Error") }
+import { Response } from 'express'
+export const ServerError = (res: Response<APIResponse>, msg: string, statusCode?: number, errMsg?: string) => {
+    return res.status(statusCode || 400).json({
+        message: msg,
+        errorMsg: errMsg || "Internal Server Error"
+    })
+}

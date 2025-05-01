@@ -1,31 +1,28 @@
 import { Request, Response } from 'express'
-import APIError from '../../lib/Error/APIError'
 import { db } from '../../db'
-import { User } from '../../db/schema'
+import { UserTable } from '../../db/schema'
 import { eq } from 'drizzle-orm'
 import { ServerError } from '../../lib/func/ServerError'
 import { JwtGenerate } from '../../lib/jwt'
+import { User } from '../../types/User'
+import { comparePass } from '../../lib/func/hashing'
 
-const data = { email: "the", password: "Mcintyre@04" }
 export const loginUser = async (req: Request<{}, {}, User>, res: Response<APIResponse>) => {
-    if (req.body) {
-        const { email, password } = req.body
+    const { email, password } = req.body
 
-        const data = await db.select().from(User).where(eq(User.email, email)).catch(() => ServerError())
-        if (data.length > 0) {
-            if (password == data[0].password) {
-                // save accessToken
+    const data: Record<string, any> = await db.select().from(UserTable).where(eq(UserTable.email, email)).catch(() => ServerError(res, "Error while fetch user from database"))
 
-                res
-                    .status(200)
-                    .setHeader("authorization", `Bearer ${JwtGenerate({ email })}`)
-                    .json({
-                        message: "User Logged In"
-                    })
-            }
-            else throw new APIError(401, "Password Incorrect")
+    if (data.length > 0) {
+        if (await comparePass(data[0].password, password)) {
+            // save accessToken
+            res
+                .status(200)
+                .setHeader("authorization", `Bearer ${JwtGenerate({ email })}`)
+                .json({
+                    message: "User Logged In"
+                })
         }
-        else throw new APIError(404, "User not Found")
+        else ServerError(res, "Password Incorrect", 401)
     }
-    else ServerError()
+    else ServerError(res, "User not Found", 404)
 }

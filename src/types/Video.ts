@@ -5,7 +5,7 @@ enum Status {
     uploaded
 }
 
-interface Video {
+export interface Video {
     title: string,
     thumbnail: string,
     editor: string

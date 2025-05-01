@@ -1,25 +1,33 @@
 ###
-POST http://localhost:3000/api/login
+POST http://localhost:3000/api/signup
 Content-Type: application/json
 
 {
-    "email":"thcxsceh",
-    "password":"Mcifsdntyre@04",
+    "email":"theharshiile@gmail.com",
+    "password":"Mcintyre@04",
     "role":1,
     "name":"Hearshil"
 }
 
-
 ###
-POST http://localhost:3000/api/mail/send
+POST http://localhost:3000/api/login
 Content-Type: application/json
 
 {
-    "email":"carterinesess@gmail.com"
+    "email":"theharshiile@gmail.com",
+    "password":"Mcdasdintyre@04"
 }
+
 
 
 
 ###
 POST http://localhost:3000/api/just
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InRoY3hzY2VoIiwiaWF0IjoxNzQ1NTA2NTAxfQ.1KcbZueCni9ZWBMEYY8uo_Q7U8n9Sm5cifP4Yq4gMlM
+Cookie: refTn=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InRoY3hzY2VoIiwiaWF0IjoxNzQ1NTA2NTAxfQ.1KcbZueCni9ZWBMEYY8uo_Q7U8n9Sm5cifP4Yq4gMlM
+
+
+###
+GET http://localhost:3000/api/get/oauth/youtube/url
+
+###
+GET http://localhost:3000/api/youtube/connected

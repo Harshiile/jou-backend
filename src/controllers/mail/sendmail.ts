@@ -1,6 +1,6 @@
 import nodemailer from 'nodemailer'
 import { Request, Response } from 'express'
-import APIError from '../../lib/Error/APIError'
+import { ServerError } from '../../lib/func/ServerError';
 
 interface Recipient {
     email: string
@@ -39,5 +39,5 @@ export const SendMail = async (req: Request<{}, {}, Recipient>, res: Response<AP
             }
         })
     }
-    else throw new APIError(400, "Email is not exists")
+    else ServerError(res, "Email is not exists", 400)
 }

@@ -14,7 +14,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.SendMail = void 0;
 const nodemailer_1 = __importDefault(require("nodemailer"));
-const APIError_1 = __importDefault(require("../../lib/Error/APIError"));
+const ServerError_1 = require("../../lib/func/ServerError");
 const transporter = nodemailer_1.default.createTransport({
     service: "gmail",
     auth: {
@@ -48,6 +48,6 @@ const SendMail = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         });
     }
     else
-        throw new APIError_1.default(400, "Email is not exists");
+        (0, ServerError_1.ServerError)(res, "Email is not exists", 400);
 });
 exports.SendMail = SendMail;
