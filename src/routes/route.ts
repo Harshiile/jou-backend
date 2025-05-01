@@ -3,6 +3,7 @@ import { loginUser, signUser } from '../controllers/auth'
 import { SendMail } from '../controllers/mail'
 import { youtubeChannelInfo, youtubeConnecterURL } from '../controllers/oauth'
 import { authorize } from '../middleware/authorize'
+import { uploadOnDrive } from '../controllers/drive/upload'
 const router = Router()
 
 const tmp = () => { }
@@ -20,7 +21,7 @@ router.get('/youtube/get/channel-info', youtubeChannelInfo) // get/youtube/info
 router.get('/youtube/upload/video', tmp)
 
 // Drive-Service
-router.get('/drive/upload', tmp)
-router.get('/drive/retrieve', tmp)
+router.post('/drive/upload', uploadOnDrive)
+router.post('/drive/retrieve', tmp)
 
 export default router
