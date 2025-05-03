@@ -6,7 +6,7 @@ import busboy from 'busboy'
 import { table } from 'console';
 
 const auth = new google.auth.GoogleAuth({
-    keyFile: './public/justoneupload-53307184bf07.json',
+    keyFile: process.env.DRIVE_SERVICE_ACCOUNT_CREDENTIALS,
     scopes: ['https://www.googleapis.com/auth/drive.file']
 });
 

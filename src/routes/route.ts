@@ -13,7 +13,7 @@ router.post('/login', loginUser)
 router.post('/signup', signUser)
 
 // Mail-Service
-router.post('/mail/send', authorize, SendMail)
+router.post('/mail/send', SendMail)
 
 // Youtube-Service
 router.get('/youtube/get/oauth-url', youtubeConnecterURL) // get/oauth/youtube/url

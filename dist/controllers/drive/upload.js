@@ -16,7 +16,7 @@ exports.uploadOnDrive = void 0;
 const googleapis_1 = require("googleapis");
 const busboy_1 = __importDefault(require("busboy"));
 const auth = new googleapis_1.google.auth.GoogleAuth({
-    keyFile: './public/justoneupload-53307184bf07.json',
+    keyFile: process.env.DRIVE_SERVICE_ACCOUNT_CREDENTIALS,
     scopes: ['https://www.googleapis.com/auth/drive.file']
 });
 const drive = googleapis_1.google.drive({ version: 'v3', auth });

@@ -30,4 +30,9 @@ Cookie: refTn=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InRoY3hzY2VoIiwia
 GET http://localhost:3000/api/get/oauth/youtube/url
 
 ###
-GET http://localhost:3000/api/drive/upload
+POST http://localhost:3000/api/mail/send
+Content-Type: application/json
+
+{
+    "email":"theharshiile@gmail.com"
+}
