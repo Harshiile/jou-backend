@@ -31,7 +31,6 @@ export const youtubeChannelInfo = async (req: Request, res: Response<APIResponse
 
     channels.data.items!.length <= 0 && ServerError(res, "Error while fetching youtube channel info", 404, "No channel associated with given youtube account")
 
-
     const existChannel = channels.data.items![0]
     // DB Insert
     res.status(200).json({

@@ -9,7 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.loginUser = void 0;
+exports.TMP = exports.loginUser = void 0;
 const db_1 = require("../../db");
 const schema_1 = require("../../db/schema");
 const drizzle_orm_1 = require("drizzle-orm");
@@ -21,10 +21,12 @@ const loginUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const data = yield db_1.db.select().from(schema_1.UserTable).where((0, drizzle_orm_1.eq)(schema_1.UserTable.email, email)).catch(() => (0, ServerError_1.ServerError)(res, "Error while fetch user from database"));
     if (data.length > 0) {
         if (yield (0, hashing_1.comparePass)(data[0].password, password)) {
-            // save accessToken
             res
                 .status(200)
-                .setHeader("authorization", `Bearer ${(0, jwt_1.JwtGenerate)({ email })}`)
+                .cookie('auth', (0, jwt_1.JwtGenerate)({ refreshToken: data[0].refreshToken }), {
+                httpOnly: true,
+                maxAge: 15 * 60 * 1000
+            })
                 .json({
                 message: "User Logged In"
             });
@@ -36,3 +38,9 @@ const loginUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         (0, ServerError_1.ServerError)(res, "User not Found", 404);
 });
 exports.loginUser = loginUser;
+const TMP = (req, res) => {
+    res.json({
+        x: (0, jwt_1.JwtValidate)(req.body.token)
+    });
+};
+exports.TMP = TMP;

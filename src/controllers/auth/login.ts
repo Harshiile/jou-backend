@@ -3,7 +3,7 @@ import { db } from '../../db'
 import { UserTable } from '../../db/schema'
 import { eq } from 'drizzle-orm'
 import { ServerError } from '../../lib/func/ServerError'
-import { JwtGenerate } from '../../lib/jwt'
+import { JwtGenerate, JwtValidate } from '../../lib/jwt'
 import { User } from '../../types/User'
 import { comparePass } from '../../lib/func/hashing'
 
@@ -14,10 +14,12 @@ export const loginUser = async (req: Request<{}, {}, User>, res: Response<APIRes
 
     if (data.length > 0) {
         if (await comparePass(data[0].password, password)) {
-            // save accessToken
             res
                 .status(200)
-                .setHeader("authorization", `Bearer ${JwtGenerate({ email })}`)
+                .cookie('auth', JwtGenerate({ refreshToken: data[0].refreshToken }), {
+                    httpOnly: true,
+                    maxAge: 15 * 60 * 1000
+                })
                 .json({
                     message: "User Logged In"
                 })
@@ -25,4 +27,11 @@ export const loginUser = async (req: Request<{}, {}, User>, res: Response<APIRes
         else ServerError(res, "Password Incorrect", 401)
     }
     else ServerError(res, "User not Found", 404)
+}
+
+
+export const TMP = (req: Request<{}, {}, { token: string }>, res: Response) => {
+    res.json({
+        x: JwtValidate(req.body.token)
+    })
 }

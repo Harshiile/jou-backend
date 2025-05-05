@@ -10,12 +10,12 @@ Content-Type: application/json
 }
 
 ###
-POST http://localhost:3000/api/login
+POST http://localhost:3000/api/login 
 Content-Type: application/json
 
 {
     "email":"theharshiile@gmail.com",
-    "password":"Mcdasdintyre@04"
+    "password":"Mcintyre@04"
 }
 
 ###
@@ -30,9 +30,9 @@ Cookie: refTn=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InRoY3hzY2VoIiwia
 GET http://localhost:3000/api/get/oauth/youtube/url
 
 ###
-POST http://localhost:3000/api/mail/send
+POST http://localhost:3000/api/tmp
 Content-Type: application/json
 
 {
-    "email":"theharshiile@gmail.com"
+    "token":"eyJhbGdciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InRoZWhhcnNoaWlsZUBnbWFpbC5jb20iLCJyb2xlIjoxLCJpYXQiOjE3NDY0Mzc3NTh9.3_I1qL2MeC5h6voWxpAShHcnGKFUi_fnrmIOFZWJN-k"
 }

@@ -4,6 +4,7 @@ import { SendMail } from '../controllers/mail'
 import { youtubeChannelInfo, youtubeConnecterURL } from '../controllers/oauth'
 import { authorize } from '../middleware/authorize'
 import { uploadOnDrive } from '../controllers/drive/upload'
+import { TMP } from '../controllers/auth/login'
 const router = Router()
 
 const tmp = () => { }
@@ -11,6 +12,7 @@ const tmp = () => { }
 // User-Auth
 router.post('/login', loginUser)
 router.post('/signup', signUser)
+router.post('/tmp', TMP)
 
 // Mail-Service
 router.post('/mail/send', SendMail)
@@ -22,6 +24,6 @@ router.get('/youtube/upload/video', tmp)
 
 // Drive-Service
 router.post('/drive/upload', uploadOnDrive)
-router.post('/drive/retrieve', tmp)
+router.post('/drive/retrieve', authorize)
 
 export default router
