@@ -2,8 +2,11 @@ import { Request, Response } from 'express'
 import { ServerError } from '../../lib/func/ServerError'
 import { google } from 'googleapis'
 import fs from 'fs';
+import { v4 as uuidv4 } from 'uuid'
 import busboy from 'busboy'
 import { table } from 'console';
+import { io } from '../../socket';
+import { uuid } from 'drizzle-orm/gel-core';
 
 const auth = new google.auth.GoogleAuth({
     keyFile: process.env.DRIVE_SERVICE_ACCOUNT_CREDENTIALS,
@@ -12,32 +15,38 @@ const auth = new google.auth.GoogleAuth({
 
 const drive = google.drive({ version: 'v3', auth });
 
-export const uploadOnDrive = async (req: Request, res: Response<APIResponse>) => {
+export const uploadOnDrive = async (req: Request<{}, {}, { socketId: string }>, res: Response<APIResponse>) => {
     const bb = busboy({ headers: req.headers });
+    console.log(req.headers['socket']);
 
-    bb.on('file', async (fieldname: string, file: object, filename: FileName) => {
-        const driveUpload = await drive.files.create({
-            requestBody: {
-                name: filename.filename,
-                parents: [process.env.DRIVE_FOLDER_ID!],
-            },
-            media: {
-                mimeType: filename.mimeType,
-                body: file,
-            },
-        }, {
-            onUploadProgress: (progress) => {
-                const uploaded = progress.bytesRead || progress.loaded
-                const percent = Math.round((Number(uploaded) / Number((req.headers['content-length']) || 1)) * 100);
-                console.log(`Upload Progress: ${percent}%`);
-            }
-        });
-    })
-    req.pipe(bb)
+    if (req.headers['socket']) {
+        bb.on('file', async (fieldname: string, file: object, filename: FileName) => {
+            const [fileName, fileExt] = filename.filename.split('.')
+            await drive.files.create({
+                requestBody: {
+                    name: `${fileName}-${uuidv4()}.${fileExt}`,
+                    parents: [process.env.DRIVE_FOLDER_ID!],
+                },
+                media: {
+                    mimeType: filename.mimeType,
+                    body: file,
+                },
+            }, {
+                onUploadProgress: (progress) => {
+                    const uploaded = progress.bytesRead || progress.loaded
+                    const percent = Math.round((Number(uploaded) / Number((req.headers['content-length']) || 1)) * 100);
+                    io.to(req.headers['socket']!).emit('uploading-progress', { percentage: percent })
+                }
+            });
+        })
+        req.pipe(bb)
 
-    res.json({
-        message: "Uploaded",
-    })
+        res.json({
+            message: "Uploaded",
+        })
+    }
+    else
+        ServerError(res, "Socket is not connected")
 }
 
 interface FileName {
