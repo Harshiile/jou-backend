@@ -1,10 +1,11 @@
 import { Router } from 'express'
-import { loginUser, signUser } from '../controllers/auth'
 import { SendMail } from '../controllers/mail'
-import { youtubeChannelInfo, youtubeConnecterURL } from '../controllers/oauth'
 import { authorize } from '../middleware/authorize'
-import { uploadOnDrive } from '../controllers/drive/upload'
-import { TMP } from '../controllers/auth/login'
+import { loginUser, signUser } from '../controllers/auth'
+import { youtubeChannelInfo, youtubeConnecterURL } from '../controllers/oauth'
+import { deleteOnDrive, uploadOnDrive } from '../controllers/drive'
+import { getVideosFromWorkSpace } from '../controllers/fetch/video'
+import { getWorkSpaces } from '../controllers/fetch/user'
 const router = Router()
 
 const tmp = () => { }
@@ -12,7 +13,6 @@ const tmp = () => { }
 // User-Auth
 router.post('/login', loginUser)
 router.post('/signup', signUser)
-router.post('/tmp', TMP)
 
 // Mail-Service
 router.post('/mail/send', SendMail)
@@ -24,6 +24,10 @@ router.get('/youtube/upload/video', tmp)
 
 // Drive-Service
 router.post('/drive/upload', uploadOnDrive)
+router.delete('/drive', deleteOnDrive)
 router.post('/drive/retrieve', authorize)
 
+// Fetcher
+router.get('/get/videos', getVideosFromWorkSpace)
+router.get('/get/workspace', getWorkSpaces)
 export default router

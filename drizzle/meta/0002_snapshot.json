@@ -1,6 +1,6 @@
 {
-  "id": "330382e7-c094-474b-9db7-d7bd6e000e39",
-  "prevId": "00000000-0000-0000-0000-000000000000",
+  "id": "683c4845-68e1-4926-a5e2-66dc0f09e820",
+  "prevId": "48ee6491-db87-4480-9f78-18271ae1e276",
   "version": "7",
   "dialect": "postgresql",
   "tables": {
@@ -87,6 +87,18 @@
         },
         "thumbnail": {
           "name": "thumbnail",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "fileId": {
+          "name": "fileId",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "url": {
+          "name": "url",
           "type": "varchar",
           "primaryKey": false,
           "notNull": false

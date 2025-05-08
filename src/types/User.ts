@@ -1,12 +1,7 @@
-enum Role {
-    Youtuber,
-    Editor
-}
-
 export interface User {
     name: string,
     email: string,
-    role: Role,
+    userType: 'youtuber' | 'editor',
     password: string,
     refreshToken?: string
 }

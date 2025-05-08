@@ -1,14 +1,11 @@
-enum Status {
-    reviewPending,
-    uploadPending,
-    rejected,
-    uploaded
-}
-
 export interface Video {
     title: string,
+    desc: string,
     thumbnail: string,
+    videoType: 'public' | 'private' | 'unlisted'
+    uploadAt: string
+    fileId: string,
     editor: string
     workspace: string,
-    status: Status
+    status: 'reviewPending' | 'uploadPending' | 'uploaded'
 }

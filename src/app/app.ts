@@ -9,7 +9,10 @@ dotenv.config()
 const app = express()
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
-app.use(cors())
+app.use(cors({
+    origin: process.env.FRONTEND_URL,
+    credentials: true
+}))
 app.use(CookieParser())
 app.use(express.static(path.resolve('public')));
 app.use('/api', router)

@@ -22,17 +22,14 @@ Content-Type: application/json
 
 
 ###
-POST http://localhost:3000/api/just
-Cookie: refTn=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InRoY3hzY2VoIiwiaWF0IjoxNzQ1NTA2NTAxfQ.1KcbZueCni9ZWBMEYY8uo_Q7U8n9Sm5cifP4Yq4gMlM
+GET http://localhost:3000/api/get/videos?workspace=279c57a2-9236-44fa-9356-1159d87c83d1
+
+###
+GET http://localhost:3000/api/get/workspace?userId=298446e0-745d-4ff5-b34c-d44f45b9e7b5&role=youtuber
 
 
 ###
-GET http://localhost:3000/api/get/oauth/youtube/url
+DELETE http://localhost:3000/api/drive?fileId=1RPPsDba8YrgHFt1aMEFVUZrupZ6csXLe
 
 ###
 POST http://localhost:3000/api/tmp
-Content-Type: application/json
-
-{
-    "token":"eyJhbGdciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InRoZWhhcnNoaWlsZUBnbWFpbC5jb20iLCJyb2xlIjoxLCJpYXQiOjE3NDY0Mzc3NTh9.3_I1qL2MeC5h6voWxpAShHcnGKFUi_fnrmIOFZWJN-k"
-}

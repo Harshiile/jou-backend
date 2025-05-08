@@ -8,30 +8,29 @@ import { User } from '../../types/User'
 import { comparePass } from '../../lib/func/hashing'
 
 export const loginUser = async (req: Request<{}, {}, User>, res: Response<APIResponse>) => {
-    const { email, password } = req.body
-
-    const data: Record<string, any> = await db.select().from(UserTable).where(eq(UserTable.email, email)).catch(() => ServerError(res, "Error while fetch user from database"))
-
-    if (data.length > 0) {
-        if (await comparePass(data[0].password, password)) {
-            res
-                .status(200)
-                .cookie('auth', JwtGenerate({ refreshToken: data[0].refreshToken }), {
-                    httpOnly: true,
-                    maxAge: 15 * 60 * 1000
-                })
-                .json({
-                    message: "User Logged In"
-                })
-        }
-        else ServerError(res, "Password Incorrect", 401)
-    }
-    else ServerError(res, "User not Found", 404)
-}
-
-
-export const TMP = (req: Request<{}, {}, { token: string }>, res: Response) => {
+    const x = req.headers.cookie
     res.json({
-        x: JwtValidate(req.body.token)
+        message: "...",
+        data: { x }
     })
+    // const { email, password } = req.body
+
+    // const data: Record<string, any> = await db.select().from(UserTable).where(eq(UserTable.email, email)).catch(() => ServerError(res, "Error while fetch user from database"))
+
+    // if (data.length > 0) {
+    //     if (await comparePass(data[0].password, password)) {
+    //         res
+    //             .status(200)
+    //             .cookie('auth', JwtGenerate({ refreshToken: data[0].refreshToken }), {
+    //                 httpOnly: true,
+    //                 maxAge: 15 * 60 * 1000
+    //             })
+    //             .json({
+    //                 message: "User Logged In"
+    //             })
+    //     }
+    //     else ServerError(res, "Password Incorrect", 401)
+    // }
+    // else ServerError(res, "User not Found", 404)
 }
+
