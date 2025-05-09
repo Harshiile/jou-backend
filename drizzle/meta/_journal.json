@@ -5,22 +5,8 @@
     {
       "idx": 0,
       "version": "7",
-      "when": 1746697476945,
-      "tag": "0000_wide_nuke",
-      "breakpoints": true
-    },
-    {
-      "idx": 1,
-      "version": "7",
-      "when": 1746697706573,
-      "tag": "0001_fast_penance",
-      "breakpoints": true
-    },
-    {
-      "idx": 2,
-      "version": "7",
-      "when": 1746698580383,
-      "tag": "0002_hard_guardsmen",
+      "when": 1746776190325,
+      "tag": "0000_curious_talos",
       "breakpoints": true
     }
   ]

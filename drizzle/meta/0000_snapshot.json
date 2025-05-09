@@ -1,9 +1,69 @@
 {
-  "id": "330382e7-c094-474b-9db7-d7bd6e000e39",
+  "id": "8ffdacff-369d-4da8-8340-91ef913daf43",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
   "tables": {
+    "public.ws-editor-join": {
+      "name": "ws-editor-join",
+      "schema": "",
+      "columns": {
+        "workspace": {
+          "name": "workspace",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "editor": {
+          "name": "editor",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "ws-editor-join_workspace_workspace_id_fk": {
+          "name": "ws-editor-join_workspace_workspace_id_fk",
+          "tableFrom": "ws-editor-join",
+          "tableTo": "workspace",
+          "columnsFrom": [
+            "workspace"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "ws-editor-join_editor_user_id_fk": {
+          "name": "ws-editor-join_editor_user_id_fk",
+          "tableFrom": "ws-editor-join",
+          "tableTo": "user",
+          "columnsFrom": [
+            "editor"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {
+        "pk-ws-editor-join": {
+          "name": "pk-ws-editor-join",
+          "columns": [
+            "editor",
+            "workspace"
+          ]
+        }
+      },
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
     "public.user": {
       "name": "user",
       "schema": "",
@@ -70,7 +130,7 @@
           "name": "title",
           "type": "varchar",
           "primaryKey": false,
-          "notNull": false
+          "notNull": true
         },
         "desc": {
           "name": "desc",
@@ -91,6 +151,18 @@
           "primaryKey": false,
           "notNull": false
         },
+        "fileId": {
+          "name": "fileId",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "url": {
+          "name": "url",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": false
+        },
         "status": {
           "name": "status",
           "type": "status",
@@ -98,8 +170,8 @@
           "primaryKey": false,
           "notNull": true
         },
-        "uploadedAt": {
-          "name": "uploadedAt",
+        "willUploadAt": {
+          "name": "willUploadAt",
           "type": "timestamp with time zone",
           "primaryKey": false,
           "notNull": false
@@ -152,12 +224,12 @@
       "checkConstraints": {},
       "isRLSEnabled": false
     },
-    "public.workspace_editor": {
-      "name": "workspace_editor",
+    "public.ws-video-editor-join": {
+      "name": "ws-video-editor-join",
       "schema": "",
       "columns": {
-        "workspace": {
-          "name": "workspace",
+        "videoId": {
+          "name": "videoId",
           "type": "uuid",
           "primaryKey": false,
           "notNull": false
@@ -167,13 +239,32 @@
           "type": "uuid",
           "primaryKey": false,
           "notNull": false
+        },
+        "workspace": {
+          "name": "workspace",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": false
         }
       },
       "indexes": {},
       "foreignKeys": {
-        "workspace_editor_workspace_workspace_id_fk": {
-          "name": "workspace_editor_workspace_workspace_id_fk",
-          "tableFrom": "workspace_editor",
+        "ws-video-editor-join_editor_user_id_fk": {
+          "name": "ws-video-editor-join_editor_user_id_fk",
+          "tableFrom": "ws-video-editor-join",
+          "tableTo": "user",
+          "columnsFrom": [
+            "editor"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        },
+        "ws-video-editor-join_workspace_workspace_id_fk": {
+          "name": "ws-video-editor-join_workspace_workspace_id_fk",
+          "tableFrom": "ws-video-editor-join",
           "tableTo": "workspace",
           "columnsFrom": [
             "workspace"
@@ -183,27 +274,15 @@
           ],
           "onDelete": "cascade",
           "onUpdate": "no action"
-        },
-        "workspace_editor_editor_user_id_fk": {
-          "name": "workspace_editor_editor_user_id_fk",
-          "tableFrom": "workspace_editor",
-          "tableTo": "user",
-          "columnsFrom": [
-            "editor"
-          ],
-          "columnsTo": [
-            "id"
-          ],
-          "onDelete": "cascade",
-          "onUpdate": "no action"
         }
       },
       "compositePrimaryKeys": {
-        "PK": {
-          "name": "PK",
+        "pk-ws-video-editor-join": {
+          "name": "pk-ws-video-editor-join",
           "columns": [
-            "editor",
-            "workspace"
+            "videoId",
+            "workspace",
+            "editor"
           ]
         }
       },
@@ -237,12 +316,6 @@
         },
         "avatar": {
           "name": "avatar",
-          "type": "varchar",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "email": {
-          "name": "email",
           "type": "varchar",
           "primaryKey": false,
           "notNull": false
@@ -289,9 +362,7 @@
       "schema": "public",
       "values": [
         "reviewPending",
-        "uploadPending",
-        "rejected",
-        "uploaded"
+        "uploadPending"
       ]
     },
     "public.userType": {

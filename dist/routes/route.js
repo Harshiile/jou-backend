@@ -4,7 +4,7 @@ const express_1 = require("express");
 const mail_1 = require("../controllers/mail");
 const authorize_1 = require("../middleware/authorize");
 const auth_1 = require("../controllers/auth");
-const oauth_1 = require("../controllers/oauth");
+const youtube_1 = require("../controllers/youtube");
 const drive_1 = require("../controllers/drive");
 const video_1 = require("../controllers/fetch/video");
 const user_1 = require("../controllers/fetch/user");
@@ -16,8 +16,8 @@ router.post('/signup', auth_1.signUser);
 // Mail-Service
 router.post('/mail/send', mail_1.SendMail);
 // Youtube-Service
-router.get('/youtube/get/oauth-url', oauth_1.youtubeConnecterURL); // get/oauth/youtube/url
-router.get('/youtube/get/channel-info', oauth_1.youtubeChannelInfo); // get/youtube/info
+router.get('/youtube/get/oauth-url', youtube_1.youtubeConnecterURL); // get/oauth/youtube/url
+router.get('/youtube/get/channel-info', youtube_1.youtubeChannelInfo); // get/youtube/info
 router.get('/youtube/upload/video', tmp);
 // Drive-Service
 router.post('/drive/upload', drive_1.uploadOnDrive);

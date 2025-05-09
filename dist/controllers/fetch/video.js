@@ -10,14 +10,27 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.getVideosFromWorkSpace = void 0;
-const db_1 = require("../../db");
-const schema_1 = require("../../db/schema");
-const drizzle_orm_1 = require("drizzle-orm");
-const ServerError_1 = require("../../lib/func/ServerError");
+const youtube_1 = require("../youtube");
 const getVideosFromWorkSpace = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { workspace } = req.query;
     if (typeof (workspace) == 'string') {
-        const videos = yield db_1.db.select().from(schema_1.VideoTable).where((0, drizzle_orm_1.eq)(schema_1.VideoTable.workspace, workspace)).catch(() => (0, ServerError_1.ServerError)(res, "Error while fetch videoes of workspace from database"));
+        // const videos: Record<string, any> = await db.select({
+        //     id: VideoTable.id,
+        //     title: VideoTable.title,
+        //     videoType: VideoTable.videoType,
+        //     thumbnail: VideoTable.thumbnail,
+        //     url: VideoTable.url,
+        //     status: VideoTable.status,
+        //     uploadAt: VideoTable.willUploadAt
+        // }).from(VideoTable).where(eq(VideoTable.workspace, workspace)).catch(() => ServerError(res, "Error while fetch videoes of workspace from database"))
+        const videos = [{ videoId: 'DkeiKbqa02g' }, { videoId: 'DD0DgwWMrA' }, { videoId: 'yWf-pwGjXcc' }];
+        yield Promise.all(videos.map((item) => __awaiter(void 0, void 0, void 0, function* () {
+            const data = yield (0, youtube_1.videoInformation)({
+                workspaceId: workspace,
+                videoId: item.videoId
+            });
+            item.metadata = data;
+        })));
         res.json({
             message: "Videos from workspace",
             data: { videos }

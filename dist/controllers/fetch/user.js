@@ -30,7 +30,7 @@ const getWorkSpaces = (req, res) => __awaiter(void 0, void 0, void 0, function* 
             });
         }
         else if (role == 'editor') {
-            const subQuery = db_1.db.select({ workspace: schema_1.WorkspaceEditorJoin.workspace }).from(schema_1.WorkspaceEditorJoin).where((0, drizzle_orm_1.eq)(schema_1.WorkspaceEditorJoin.editor, userId));
+            const subQuery = db_1.db.select({ workspace: schema_1.EditorWorkspaceJoinTable.workspace }).from(schema_1.EditorWorkspaceJoinTable).where((0, drizzle_orm_1.eq)(schema_1.EditorWorkspaceJoinTable.editor, userId));
             const workspaces = yield db_1.db.select().from(schema_1.WorkspaceTable).where((0, drizzle_orm_1.inArray)(schema_1.WorkspaceTable.id, subQuery));
             res.json({
                 message: "Workspaces of Editor",

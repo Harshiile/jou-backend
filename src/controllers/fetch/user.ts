@@ -1,6 +1,6 @@
 import { Request, Response } from 'express'
 import { db } from '../../db';
-import { VideoTable, WorkspaceEditorJoin, WorkspaceTable } from '../../db/schema';
+import { VideoTable, EditorWorkspaceJoinTable, WorkspaceTable } from '../../db/schema';
 import { eq, inArray } from 'drizzle-orm';
 import { ServerError } from '../../lib/func/ServerError';
 
@@ -20,7 +20,7 @@ export const getWorkSpaces = async (req: Request<{}, {}>, res: Response<APIRespo
             })
         }
         else if (role == 'editor') {
-            const subQuery = db.select({ workspace: WorkspaceEditorJoin.workspace }).from(WorkspaceEditorJoin).where(eq(WorkspaceEditorJoin.editor, userId));
+            const subQuery = db.select({ workspace: EditorWorkspaceJoinTable.workspace }).from(EditorWorkspaceJoinTable).where(eq(EditorWorkspaceJoinTable.editor, userId));
             const workspaces = await db.select().from(WorkspaceTable).where(inArray(WorkspaceTable.id, subQuery))
             res.json({
                 message: "Workspaces of Editor",

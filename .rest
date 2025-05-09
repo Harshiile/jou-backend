@@ -1,35 +1,18 @@
-###
-POST http://localhost:3000/api/signup
-Content-Type: application/json
 
-{
-    "email":"theharshiile@gmail.com",
-    "password":"Mcintyre@04",
-    "role":1,
-    "name":"Hearshil"
-}
-
-###
-POST http://localhost:3000/api/login 
-Content-Type: application/json
-
-{
-    "email":"theharshiile@gmail.com",
-    "password":"Mcintyre@04"
-}
-
-###
-
-
-###
+### -- Videos from Workspace
 GET http://localhost:3000/api/get/videos?workspace=279c57a2-9236-44fa-9356-1159d87c83d1
 
-###
+
+
+### -- Workspaces from userId & role
 GET http://localhost:3000/api/get/workspace?userId=298446e0-745d-4ff5-b34c-d44f45b9e7b5&role=youtuber
 
 
-###
+
+### -- Delete drive file using fileId
 DELETE http://localhost:3000/api/drive?fileId=1RPPsDba8YrgHFt1aMEFVUZrupZ6csXLe
 
-###
-POST http://localhost:3000/api/tmp
+
+
+### -- Get Youtuber Connecter URL
+GET http://localhost:3000/api/youtube/get/oauth-url

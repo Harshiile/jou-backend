@@ -1,20 +1,11 @@
 import { Request, Response } from 'express'
-import { google } from 'googleapis'
-import { GaxiosPromise, youtube, youtube_v3 } from 'googleapis/build/src/apis/youtube'
 import { ServerError } from '../../lib/func/ServerError'
-
-const oauth2Client = new google.auth.OAuth2({
-    clientId: process.env.OAUTH_CLIENT_ID,
-    clientSecret: process.env.OAUTH_CLIENT_SECRET,
-    redirectUri: 'http://localhost:5173/get/youtube/info'
-})
-
+import { oauth2Client } from './OauthClient'
 
 const scopes = [
     'https://www.googleapis.com/auth/youtube.upload',
-    'https://www.googleapis.com/auth/youtube.readonly',
+    'https://www.googleapis.com/auth/youtube.readonly'
 ]
-
 
 export const youtubeConnecterURL = (req: Request, res: Response<APIResponse>) => {
     const url = oauth2Client.generateAuthUrl({
