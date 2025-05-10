@@ -4,7 +4,10 @@ GET http://localhost:3000/api/get/videos?workspace=2f868511-5242-45a9-b305-d0ca1
 
 
 ### -- Workspaces from userId
-GET http://localhost:3000/api/get/workspaces?userId=298446e0-745d-4ff5-b34c-d44f45b9e7b5
+GET http://localhost:3000/api/get/workspaces?userId=298446e0-745d-4fh5-b34c-d44f45b9e7b5&role=youtuber
+
+### -- Workspaces from userId
+GET http://localhost:3000/api/get/workspaces?userId=dde629f9-2a3d-42c7-a024-09bddc6241a7&role=editor
 
 
 
@@ -20,3 +23,23 @@ DELETE http://localhost:3000/api/drive?fileId=1RPPsDba8YrgHFt1aMEFVUZrupZ6csXLe
 
 ### -- Get Youtuber Connecter URL
 GET http://localhost:3000/api/youtube/get/oauth-url
+
+
+### -- User Joining WS via Link
+POST http://localhost:3000/api/join/workspace/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ3b3Jrc3BhY2VJZCI6IjJmODY4NTExLTUyNDItNDVhOS1iMzA1LWQwY2ExYjI4YjEwNiIsImV4cGlyeSI6MTc0Njg4MDM5MDExMCwiaWF0IjoxNzQ2ODc2NzkwfQ.BOTQsx8_LveHiZy1C4lMvnN6anUAD9B05IuAU8RNtFo
+Content-Type: application/json
+
+{
+    "userId":"dde629f9-2a3d-42c7-a024-09bddc6241a7"
+}
+
+
+### -- TMP
+GET http://localhost:3000/api/tmp
+
+
+### -- TMP
+GET http://localhost:3000/api/get/editor-contribution?ws=2f868511-5242-45a9-b305-d0ca1b28b106
+
+
+# 298446e0-745d-4ff5-b34c-d44f45b9e7b5

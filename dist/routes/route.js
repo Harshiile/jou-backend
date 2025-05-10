@@ -8,11 +8,16 @@ const youtube_1 = require("../controllers/youtube");
 const drive_1 = require("../controllers/drive");
 const video_1 = require("../controllers/fetch/video");
 const workspace_1 = require("../controllers/fetch/workspace");
+const tmp_1 = require("../controllers/func/tmp");
+const refreshFetch_1 = require("../controllers/fetch/refreshFetch");
+const joinWs_1 = require("../controllers/auth/joinWs");
+const analytics_1 = require("../controllers/fetch/analytics");
 const router = (0, express_1.Router)();
 const tmp = () => { };
 // User-Auth
 router.post('/login', auth_1.loginUser);
 router.post('/signup', auth_1.signUser);
+router.post('/join/workspace/:link', joinWs_1.joinWorkSpace);
 // Mail-Service
 router.post('/mail/send', mail_1.SendMail);
 // Youtube-Service
@@ -26,4 +31,8 @@ router.post('/drive/retrieve', authorize_1.authorize);
 // Fetcher
 router.get('/get/videos', video_1.getVideosFromWorkSpace);
 router.get('/get/workspaces', workspace_1.getWorkSpaces);
+router.get('/get/user', refreshFetch_1.refreshFetch);
+router.get('/get/editor-contribution', analytics_1.editorContribution);
+// TMP
+router.get('/tmp', tmp_1.TMP);
 exports.default = router;

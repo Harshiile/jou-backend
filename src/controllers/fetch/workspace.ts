@@ -8,7 +8,7 @@ import { validate } from 'uuid'
 export const getWorkSpaces = async (req: Request<{}, {}>, res: Response<APIResponse>) => {
     const { userId, role } = req.query;
 
-    !validate(userId) && ServerError(res, "UserId is not valid")
+    !validate(userId) && ServerError(res, "UserId is not valid");
 
     if (typeof (userId) == 'string') {
         if (role == 'youtuber') {
@@ -36,7 +36,7 @@ export const getWorkSpaces = async (req: Request<{}, {}>, res: Response<APIRespo
                 data: { workspaces }
             })
         }
-        else ServerError(res, "Role is not valid")
+        else ServerError(res, "Role is not valid");
     }
-    else ServerError(res, "UserId is not valid")
+    else ServerError(res, "UserId is not valid");
 }

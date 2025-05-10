@@ -1,6 +1,6 @@
 import { Request, Response } from 'express'
 import { db } from '../../db';
-import { VideoTable, VideoWorkspaceJoinTable, WorkspaceTable } from '../../db/schema';
+import { UserTable, VideoTable, VideoWorkspaceJoinTable, WorkspaceTable } from '../../db/schema';
 import { eq } from 'drizzle-orm';
 import { ServerError } from '../../lib/func/ServerError';
 import { url } from 'inspector';
@@ -21,19 +21,27 @@ export const getVideosFromWorkSpace = async (req: Request<{}, {}>, res: Response
             uploadAt: VideoTable.willUploadAt,
             thumbnail: VideoTable.thumbnail,
             videoType: VideoTable.videoType,
-            status: VideoTable.status
-        }).from(VideoTable).where(eq(VideoTable.workspace, workspace.toString()))
+            status: VideoTable.status,
+            editor: UserTable.name
+        })
+            .from(VideoTable)
+            .leftJoin(UserTable, eq(UserTable.id, VideoTable.editor))
+            .where(eq(VideoTable.workspace, workspace.toString()))
 
 
 
         // Uploaded Videos
         const uploadedVideos = await db.select({
-            videoId: VideoWorkspaceJoinTable.videoId
-        }).from(VideoWorkspaceJoinTable).where(eq(VideoWorkspaceJoinTable.workspace, workspace.toString()))
+            editor: UserTable.name,
+            videoId: VideoWorkspaceJoinTable.videoId,
+        })
+            .from(VideoWorkspaceJoinTable)
+            .leftJoin(UserTable, eq(UserTable.id, VideoWorkspaceJoinTable.editor))
+            .where(eq(VideoWorkspaceJoinTable.workspace, workspace?.toString()!))
 
         const [ws] = await db.select({
             refreshToken: WorkspaceTable.refreshToken
-        }).from(WorkspaceTable).where(eq(WorkspaceTable.id, workspace.toString()))
+        }).from(WorkspaceTable).where(eq(WorkspaceTable.id, workspace.toString()));
 
         const { refreshToken } = ws
 
@@ -53,6 +61,7 @@ export const getVideosFromWorkSpace = async (req: Request<{}, {}>, res: Response
         const videosMetaDatas = videoDetails?.data?.items;
 
         videosMetaDatas?.forEach(video => {
+            const { editor } = uploadedVideos.filter(fv => fv.videoId == video.id)[0]
             metadata.push({
                 id: video.id!,
                 title: video.snippet!.title!,
@@ -61,7 +70,8 @@ export const getVideosFromWorkSpace = async (req: Request<{}, {}>, res: Response
                 thumbnail: video.snippet?.thumbnails!.default!.url!,
                 videoType: video.status!.privacyStatus!,
                 views: video.statistics!.viewCount!,
-                status: 'uploaded'
+                status: 'uploaded',
+                editor
             })
         })
 
@@ -83,4 +93,5 @@ interface VideoMetaData {
     videoType: string;
     views?: string | null;
     status: string;
+    editor: string | null
 }

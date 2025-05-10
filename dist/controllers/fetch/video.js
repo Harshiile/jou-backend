@@ -27,12 +27,20 @@ const getVideosFromWorkSpace = (req, res) => __awaiter(void 0, void 0, void 0, f
             uploadAt: schema_1.VideoTable.willUploadAt,
             thumbnail: schema_1.VideoTable.thumbnail,
             videoType: schema_1.VideoTable.videoType,
-            status: schema_1.VideoTable.status
-        }).from(schema_1.VideoTable).where((0, drizzle_orm_1.eq)(schema_1.VideoTable.workspace, workspace.toString()));
+            status: schema_1.VideoTable.status,
+            editor: schema_1.UserTable.name
+        })
+            .from(schema_1.VideoTable)
+            .leftJoin(schema_1.UserTable, (0, drizzle_orm_1.eq)(schema_1.UserTable.id, schema_1.VideoTable.editor))
+            .where((0, drizzle_orm_1.eq)(schema_1.VideoTable.workspace, workspace.toString()));
         // Uploaded Videos
         const uploadedVideos = yield db_1.db.select({
-            videoId: schema_1.VideoWorkspaceJoinTable.videoId
-        }).from(schema_1.VideoWorkspaceJoinTable).where((0, drizzle_orm_1.eq)(schema_1.VideoWorkspaceJoinTable.workspace, workspace.toString()));
+            editor: schema_1.UserTable.name,
+            videoId: schema_1.VideoWorkspaceJoinTable.videoId,
+        })
+            .from(schema_1.VideoWorkspaceJoinTable)
+            .leftJoin(schema_1.UserTable, (0, drizzle_orm_1.eq)(schema_1.UserTable.id, schema_1.VideoWorkspaceJoinTable.editor))
+            .where((0, drizzle_orm_1.eq)(schema_1.VideoWorkspaceJoinTable.workspace, workspace === null || workspace === void 0 ? void 0 : workspace.toString()));
         const [ws] = yield db_1.db.select({
             refreshToken: schema_1.WorkspaceTable.refreshToken
         }).from(schema_1.WorkspaceTable).where((0, drizzle_orm_1.eq)(schema_1.WorkspaceTable.id, workspace.toString()));
@@ -50,6 +58,7 @@ const getVideosFromWorkSpace = (req, res) => __awaiter(void 0, void 0, void 0, f
         const videosMetaDatas = (_a = videoDetails === null || videoDetails === void 0 ? void 0 : videoDetails.data) === null || _a === void 0 ? void 0 : _a.items;
         videosMetaDatas === null || videosMetaDatas === void 0 ? void 0 : videosMetaDatas.forEach(video => {
             var _a;
+            const { editor } = uploadedVideos.filter(fv => fv.videoId == video.id)[0];
             metadata.push({
                 id: video.id,
                 title: video.snippet.title,
@@ -58,7 +67,8 @@ const getVideosFromWorkSpace = (req, res) => __awaiter(void 0, void 0, void 0, f
                 thumbnail: (_a = video.snippet) === null || _a === void 0 ? void 0 : _a.thumbnails.default.url,
                 videoType: video.status.privacyStatus,
                 views: video.statistics.viewCount,
-                status: 'uploaded'
+                status: 'uploaded',
+                editor
             });
         });
         res.json({
