@@ -1,6 +1,10 @@
 
 ### -- Videos from Workspace
-GET http://localhost:3000/api/get/videos?workspace=279c57a2-9236-44fa-9356-1159d87c83d1
+GET http://localhost:3000/api/get/videos?workspace=2f868511-5242-45a9-b305-d0ca1b28b106
+
+
+### -- Workspaces from userId
+GET http://localhost:3000/api/get/workspaces?userId=298446e0-745d-4ff5-b34c-d44f45b9e7b5
 
 
 

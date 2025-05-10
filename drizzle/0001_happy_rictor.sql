@@ -1,0 +1,1 @@
+ALTER TABLE "ws-video-editor-join" ALTER COLUMN "videoId" SET DATA TYPE varchar;

@@ -7,7 +7,7 @@ const auth_1 = require("../controllers/auth");
 const youtube_1 = require("../controllers/youtube");
 const drive_1 = require("../controllers/drive");
 const video_1 = require("../controllers/fetch/video");
-const user_1 = require("../controllers/fetch/user");
+const workspace_1 = require("../controllers/fetch/workspace");
 const router = (0, express_1.Router)();
 const tmp = () => { };
 // User-Auth
@@ -25,5 +25,5 @@ router.delete('/drive', drive_1.deleteOnDrive);
 router.post('/drive/retrieve', authorize_1.authorize);
 // Fetcher
 router.get('/get/videos', video_1.getVideosFromWorkSpace);
-router.get('/get/workspace', user_1.getWorkSpaces);
+router.get('/get/workspaces', workspace_1.getWorkSpaces);
 exports.default = router;

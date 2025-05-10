@@ -53,32 +53,3 @@ export const youtubeChannelInfo = async (req: Request, res: Response<APIResponse
                 })
         }).catch(_ => ServerError(res, "Workspace Creation Failed"))
 }
-
-export const videoInformation = async ({ workspaceId, videoId }: { workspaceId: string, videoId: string }) => {
-    const [ws] = await db.select({
-        refreshToken: WorkspaceTable.refreshToken
-    }).from(WorkspaceTable).where(eq(WorkspaceTable.id, workspaceId))
-    const { refreshToken } = ws
-    if (refreshToken) {
-        oauth2Client.setCredentials({
-            refresh_token: refreshToken.toString()
-        })
-        const yt = google.youtube({ version: 'v3', auth: oauth2Client })
-        if (typeof (videoId) == 'string') {
-            const videoDetails = await yt.videos.list({
-                part: ['snippet', 'status', 'statistics'],
-                id: [videoId]
-            });
-            const video = videoDetails?.data?.items![0];
-            const metadata = video ? {
-                title: video.snippet?.title,
-                publishedAt: video.snippet?.publishedAt,
-                thumbnail: video.snippet?.thumbnails?.default?.url,
-                videoType: video.status?.privacyStatus,
-                views: video.statistics?.viewCount
-            } : null
-            return metadata
-        }
-    }
-    return {}
-}

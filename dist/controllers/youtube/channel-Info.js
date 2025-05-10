@@ -9,7 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.videoInformation = exports.youtubeChannelInfo = void 0;
+exports.youtubeChannelInfo = void 0;
 const googleapis_1 = require("googleapis");
 const ServerError_1 = require("../../lib/func/ServerError");
 const OauthClient_1 = require("./OauthClient");
@@ -48,7 +48,6 @@ const youtubeChannelInfo = (req, res) => __awaiter(void 0, void 0, void 0, funct
             owner: userId,
             refreshToken: refToken
         }).then(data => {
-            console.log(data.rowCount);
             data.rowCount > 0 &&
                 res.json({
                     message: "Workspace Created",
@@ -56,33 +55,3 @@ const youtubeChannelInfo = (req, res) => __awaiter(void 0, void 0, void 0, funct
         }).catch(_ => (0, ServerError_1.ServerError)(res, "Workspace Creation Failed"));
 });
 exports.youtubeChannelInfo = youtubeChannelInfo;
-const videoInformation = (_a) => __awaiter(void 0, [_a], void 0, function* ({ workspaceId, videoId }) {
-    var _b, _c, _d, _e, _f, _g, _h, _j;
-    const [ws] = yield db_1.db.select({
-        refreshToken: schema_1.WorkspaceTable.refreshToken
-    }).from(schema_1.WorkspaceTable).where((0, drizzle_orm_1.eq)(schema_1.WorkspaceTable.id, workspaceId));
-    const { refreshToken } = ws;
-    if (refreshToken) {
-        OauthClient_1.oauth2Client.setCredentials({
-            refresh_token: refreshToken.toString()
-        });
-        const yt = googleapis_1.google.youtube({ version: 'v3', auth: OauthClient_1.oauth2Client });
-        if (typeof (videoId) == 'string') {
-            const videoDetails = yield yt.videos.list({
-                part: ['snippet', 'status', 'statistics'],
-                id: [videoId]
-            });
-            const video = (_b = videoDetails === null || videoDetails === void 0 ? void 0 : videoDetails.data) === null || _b === void 0 ? void 0 : _b.items[0];
-            const metadata = video ? {
-                title: (_c = video.snippet) === null || _c === void 0 ? void 0 : _c.title,
-                publishedAt: (_d = video.snippet) === null || _d === void 0 ? void 0 : _d.publishedAt,
-                thumbnail: (_g = (_f = (_e = video.snippet) === null || _e === void 0 ? void 0 : _e.thumbnails) === null || _f === void 0 ? void 0 : _f.default) === null || _g === void 0 ? void 0 : _g.url,
-                videoType: (_h = video.status) === null || _h === void 0 ? void 0 : _h.privacyStatus,
-                views: (_j = video.statistics) === null || _j === void 0 ? void 0 : _j.viewCount
-            } : null;
-            return metadata;
-        }
-    }
-    return {};
-});
-exports.videoInformation = videoInformation;

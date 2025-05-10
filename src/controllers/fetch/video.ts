@@ -1,39 +1,86 @@
 import { Request, Response } from 'express'
 import { db } from '../../db';
-import { VideoTable } from '../../db/schema';
+import { VideoTable, VideoWorkspaceJoinTable, WorkspaceTable } from '../../db/schema';
 import { eq } from 'drizzle-orm';
 import { ServerError } from '../../lib/func/ServerError';
 import { url } from 'inspector';
-import { videoInformation } from '../youtube';
+import { oauth2Client } from '../youtube/OauthClient';
+import { google } from 'googleapis';
 
 export const getVideosFromWorkSpace = async (req: Request<{}, {}>, res: Response<APIResponse>) => {
-
     const { workspace } = req.query;
-    if (typeof (workspace) == 'string') {
-        // const videos: Record<string, any> = await db.select({
-        //     id: VideoTable.id,
-        //     title: VideoTable.title,
-        //     videoType: VideoTable.videoType,
-        //     thumbnail: VideoTable.thumbnail,
-        //     url: VideoTable.url,
-        //     status: VideoTable.status,
-        //     uploadAt: VideoTable.willUploadAt
-        // }).from(VideoTable).where(eq(VideoTable.workspace, workspace)).catch(() => ServerError(res, "Error while fetch videoes of workspace from database"))
+    if (workspace) {
 
-        const videos = [{ videoId: 'DkeiKbqa02g' }, { videoId: 'DD0DgwWMrA' }, { videoId: 'yWf-pwGjXcc' }]
-        await Promise.all(
-            videos.map(async (item: any) => {
-                const data = await videoInformation({
-                    workspaceId: workspace,
-                    videoId: item.videoId
-                });
-                item.metadata = data;
+        // Not Uploaded Videos
+
+
+        const nonUploadedVideos = await db.select({
+            id: VideoTable.id,
+            title: VideoTable.title,
+            duration: VideoTable.duration,
+            uploadAt: VideoTable.willUploadAt,
+            thumbnail: VideoTable.thumbnail,
+            videoType: VideoTable.videoType,
+            status: VideoTable.status
+        }).from(VideoTable).where(eq(VideoTable.workspace, workspace.toString()))
+
+
+
+        // Uploaded Videos
+        const uploadedVideos = await db.select({
+            videoId: VideoWorkspaceJoinTable.videoId
+        }).from(VideoWorkspaceJoinTable).where(eq(VideoWorkspaceJoinTable.workspace, workspace.toString()))
+
+        const [ws] = await db.select({
+            refreshToken: WorkspaceTable.refreshToken
+        }).from(WorkspaceTable).where(eq(WorkspaceTable.id, workspace.toString()))
+
+        const { refreshToken } = ws
+
+        oauth2Client.setCredentials({
+            refresh_token: refreshToken
+        })
+        const yt = google.youtube({ version: 'v3', auth: oauth2Client })
+
+        const videos = uploadedVideos.map(v => v.videoId!)
+
+        const videoDetails = await yt.videos.list({
+            part: ['snippet', 'contentDetails', 'status', 'statistics'],
+            id: videos
+        });
+
+        const metadata: VideoMetaData[] = nonUploadedVideos;
+        const videosMetaDatas = videoDetails?.data?.items;
+
+        videosMetaDatas?.forEach(video => {
+            metadata.push({
+                id: video.id!,
+                title: video.snippet!.title!,
+                publishedAt: video.snippet!.publishedAt!,
+                duration: video.contentDetails!.duration!,
+                thumbnail: video.snippet?.thumbnails!.default!.url!,
+                videoType: video.status!.privacyStatus!,
+                views: video.statistics!.viewCount!,
+                status: 'uploaded'
             })
-        );
+        })
 
         res.json({
             message: "Videos from workspace",
-            data: { videos }
+            data: { metadata }
         })
     }
+
+}
+
+interface VideoMetaData {
+    id: string;
+    title: string;
+    uploadAt?: Date | null;
+    duration: string;
+    publishedAt?: string | null;
+    thumbnail: string | null;
+    videoType: string;
+    views?: string | null;
+    status: string;
 }

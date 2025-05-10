@@ -5,7 +5,7 @@ import { loginUser, signUser } from '../controllers/auth'
 import { youtubeChannelInfo, youtubeConnecterURL } from '../controllers/youtube'
 import { deleteOnDrive, uploadOnDrive } from '../controllers/drive'
 import { getVideosFromWorkSpace } from '../controllers/fetch/video'
-import { getWorkSpaces } from '../controllers/fetch/user'
+import { getWorkSpaces } from '../controllers/fetch/workspace'
 const router = Router()
 
 const tmp = () => { }
@@ -29,5 +29,5 @@ router.post('/drive/retrieve', authorize)
 
 // Fetcher
 router.get('/get/videos', getVideosFromWorkSpace)
-router.get('/get/workspace', getWorkSpaces)
+router.get('/get/workspaces', getWorkSpaces)
 export default router

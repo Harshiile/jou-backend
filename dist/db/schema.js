@@ -41,7 +41,7 @@ exports.VideoTable = (0, pg_core_1.pgTable)("video", {
     videoType: (0, exports.videoTypeEnum)('videoType').notNull(),
     thumbnail: (0, pg_core_1.varchar)('thumbnail'),
     fileId: (0, pg_core_1.varchar)('fileId').notNull(),
-    url: (0, pg_core_1.varchar)('url'),
+    duration: (0, pg_core_1.varchar)('duration').notNull(),
     status: (0, exports.statusEnum)('status').notNull(),
     willUploadAt: (0, pg_core_1.timestamp)('willUploadAt', { withTimezone: true }),
     editor: (0, pg_core_1.uuid)("editor").references(() => exports.UserTable.id), // This field going to VideoWorkspaceJoinTable
@@ -49,7 +49,7 @@ exports.VideoTable = (0, pg_core_1.pgTable)("video", {
 });
 // Many-to-Many Workspace & Video
 exports.VideoWorkspaceJoinTable = (0, pg_core_1.pgTable)('ws-video-editor-join', {
-    videoId: (0, pg_core_1.uuid)("videoId"),
+    videoId: (0, pg_core_1.varchar)("videoId"),
     editor: (0, pg_core_1.uuid)("editor").references(() => exports.UserTable.id),
     workspace: (0, pg_core_1.uuid)("workspace").references(() => exports.WorkspaceTable.id, { onDelete: 'cascade' }),
 }, table => [

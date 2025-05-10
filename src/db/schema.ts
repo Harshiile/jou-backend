@@ -46,7 +46,7 @@ export const VideoTable = pgTable("video", {
     videoType: videoTypeEnum('videoType').notNull(),
     thumbnail: varchar('thumbnail'),
     fileId: varchar('fileId').notNull(),
-    url: varchar('url'),
+    duration: varchar('duration').notNull(),
     status: statusEnum('status').notNull(),
     willUploadAt: timestamp('willUploadAt', { withTimezone: true }),
     editor: uuid("editor").references(() => UserTable.id), // This field going to VideoWorkspaceJoinTable
@@ -56,7 +56,7 @@ export const VideoTable = pgTable("video", {
 
 // Many-to-Many Workspace & Video
 export const VideoWorkspaceJoinTable = pgTable('ws-video-editor-join', {
-    videoId: uuid("videoId"),
+    videoId: varchar("videoId"),
     editor: uuid("editor").references(() => UserTable.id),
     workspace: uuid("workspace").references(() => WorkspaceTable.id, { onDelete: 'cascade' }),
 }, table => [
