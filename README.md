@@ -1,10 +1,6 @@
-<p align="center">
-  <img src="/public/logo.png" alt="JustOneUpload Logo" width="300" />
-</p>
-
 # JustOneUpload (JOU)
 
-**JustOneUpload (JOU)** is a smart collaboration platform that enables **YouTubers** and **video editors** to work seamlessly
+``**JustOneUpload (JOU)** is a smart collaboration platform that enables **YouTubers** and **video editors** to work seamlessly``
 No more file sharing through links, unnecessary downloads, or upload delays
 JOU automates the review and upload workflow from start to finish
 
