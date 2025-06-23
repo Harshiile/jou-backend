@@ -1,8 +1,8 @@
 # JustOneUpload (JOU)
 
-``**JustOneUpload (JOU)** is a smart collaboration platform that enables **YouTubers** and **video editors** to work seamlessly``
-No more file sharing through links, unnecessary downloads, or upload delays
-JOU automates the review and upload workflow from start to finish
+- **JustOneUpload (JOU)** is a smart collaboration platform that enables **YouTubers** and **video editors** to work seamlessly
+- No more file sharing through links, unnecessary downloads, or upload delays
+- JOU automates the review and upload workflow from start to finish
 
 ---
 
